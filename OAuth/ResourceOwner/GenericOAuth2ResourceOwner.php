@@ -31,11 +31,11 @@ class GenericOAuth2ResourceOwner extends AbstractResourceOwner
     public function getUserInformation($accessToken)
     {
         $url = $this->getOption('infos_url');
-        $url .= (false !== strpos($url, '?') ? '&' : '?').http_build_query(array(
-            'access_token' => $accessToken
-        ));
+        // $url .= (false !== strpos($url, '?') ? '&' : '?').http_build_query(array(
+        //     'access_token' => $accessToken
+        // ));
 
-        $content = $this->doGetUserInformationRequest($url)->getContent();
+        $content = $this->doGetUserInformationRequest($url, array(), $accessToken)->getContent();
 
         $response = $this->getUserResponse();
         $response->setResponse($content);
@@ -106,8 +106,8 @@ class GenericOAuth2ResourceOwner extends AbstractResourceOwner
     /**
      * {@inheritDoc}
      */
-    protected function doGetUserInformationRequest($url, array $parameters = array())
+    protected function doGetUserInformationRequest($url, array $parameters = array(), $access_token = '')
     {
-        return $this->httpRequest($url);
+        return $this->httpRequest($url, null, array('Authorization: OAuth ' . $access_token));
     }
 }
