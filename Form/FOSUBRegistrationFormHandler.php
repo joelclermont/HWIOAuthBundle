@@ -79,7 +79,7 @@ class FOSUBRegistrationFormHandler implements RegistrationFormHandlerInterface
         //let's build our own user object to pass to the form binding
         $uInfo = $userInformation->getResponse();
 
-        $user = new \LMammino\Bundle\JHACBundle\Entity\User();
+        $user = new \CoreCreative\Bundle\PresentationBundle\Entity\User();
 
         $user->setSalesforceId($uInfo['Id']);
         $user->setUsername($uInfo['CommunityNickname']);
