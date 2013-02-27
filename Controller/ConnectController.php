@@ -108,9 +108,7 @@ class ConnectController extends ContainerAware
             // Authenticate the user
             $this->authenticateUser($form->getData(), $error->getResourceOwnerName(), $error->getAccessToken());
 
-            return $this->container->get('templating')->renderResponse('HWIOAuthBundle:Connect:registration_success.html.twig', array(
-                'userInformation' => $userInformation,
-            ));
+            return new RedirectResponse('/');
         }
 
         // reset the error in the session
