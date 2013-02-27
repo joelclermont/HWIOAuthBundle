@@ -28,13 +28,10 @@ class GenericOAuth2ResourceOwner extends AbstractResourceOwner
     /**
      * {@inheritDoc}
      */
-    public function getUserInformation($accessToken)
+    public function getUserInformation($accessToken, $infoUserId = '')
     {
-        $url = $this->getOption('infos_url');
-        // $url .= (false !== strpos($url, '?') ? '&' : '?').http_build_query(array(
-        //     'access_token' => $accessToken
-        // ));
-
+        $url = $this->getOption('infos_url') . $infoUserId;
+        
         $content = $this->doGetUserInformationRequest($url, array(), $accessToken)->getContent();
 
         $response = $this->getUserResponse();
@@ -84,7 +81,10 @@ class GenericOAuth2ResourceOwner extends AbstractResourceOwner
             throw new AuthenticationException('Not a valid access token.');
         }
 
-        return $response['access_token'];
+        return array(
+            'access_token' => $response['access_token'],
+            'info_user_id' => basename($response['id'])
+        );
     }
 
     /**

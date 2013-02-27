@@ -80,13 +80,17 @@ class OAuthListener extends AbstractAuthenticationListener
             throw new AuthenticationException('No oauth code in the request.');
         }
 
-        $accessToken = $resourceOwner->getAccessToken(
+        $tokenResponse = $resourceOwner->getAccessToken(
             $request,
             $this->httpUtils->createRequest($request, $checkPath)->getUri()
         );
 
+        $accessToken = $tokenResponse['access_token'];
+        $infoUserId  = $tokenResponse['info_user_id'];
+
         $token = new OAuthToken($accessToken);
         $token->setResourceOwnerName($resourceOwner->getName());
+        $token->setAttribute('info_user_id', $infoUserId);
 
         return $this->authenticationManager->authenticate($token);
     }

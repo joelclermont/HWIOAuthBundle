@@ -93,7 +93,7 @@ class ConnectController extends ContainerAware
         }
 
         $userInformation = $this->getResourceOwnerByName($error->getResourceOwnerName())
-            ->getUserInformation($error->getAccessToken());
+            ->getUserInformation($error->getAccessToken(), $error->getExtraInformation()->getAttribute('info_user_id'));
 
         if ($this->container->has('hwi_oauth.registration.form')) {
             $form = $this->container->get('hwi_oauth.registration.form');
