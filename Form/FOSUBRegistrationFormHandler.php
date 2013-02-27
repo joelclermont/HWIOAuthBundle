@@ -76,23 +76,33 @@ class FOSUBRegistrationFormHandler implements RegistrationFormHandlerInterface
             return $processed;
         }
 
-        $form->setData($userInformation);
+        //let's build our own user object to pass to the form binding
+        $uInfo = $userInformation->getResponse();
 
-        if ('POST' === $request->getMethod()) {
-            if ('2' == Kernel::MAJOR_VERSION && '2' <= Kernel::MINOR_VERSION) {
-                $form->bind($request);
-            } else {
-                $form->bindRequest($request);
-            }
+        $user = new \LMammino\Bundle\JHACBundle\Entity\User();
 
-            if ($form->isValid()) {
-                $this->setUserInformation($form->getData(), $userInformation);
+        $user->setSalesforceId($uInfo['Id']);
+        $user->setUsername($uInfo['CommunityNickname']);
+        $user->setUsernameCanonical($uInfo['CommunityNickname']);
+        $user->setEmail($uInfo['Email']);
+        $user->setEmailCanonical($uInfo['Email']);
+        $user->setEnabled(true);
+        $user->setFirstname($uInfo['FirstName']);
+        $user->setLastname($uInfo['LastName']);
 
-                return true;
-            }
+        $form->setData($user);
+
+        //strip out logic to test for POST and valdiate the form
+        //we will auto-submit the form with all necessary info
+        if ('2' == Kernel::MAJOR_VERSION && '2' <= Kernel::MINOR_VERSION) {
+            $form->bind($request);
+        } else {
+            $form->bindRequest($request);
         }
 
-        return false;
+        $this->setUserInformation($form->getData(), $userInformation);
+
+        return true;
     }
 
     /**
