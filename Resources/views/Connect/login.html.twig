@@ -1,10 +1,40 @@
-{% extends 'HWIOAuthBundle::layout.html.twig' %}
+{#{% extends 'HWIOAuthBundle::layout.html.twig' %}#}
+
+{# ------------------------------------------
+    Extending the bundle template
+--------------------------------------------- #}
+{% extends 'CorePresoBundle::layout.html.twig' %}
+
+{# ------------------------------------------
+    Template specific code
+--------------------------------------------- #}
+
+{% set body_attributes = 'id="account"' %}
+
+{% block pg_body %}
+    <div class="row">
+        <div class="twelve columns">
+
+{#{% extends 'HWIOAuthBundle::layout.html.twig' %}#}
+
+        <h3>Sorry, your session is no longer valid. Please login again.</h3>
 
 {% block hwi_oauth_content %}
     {% if error %}
         <span>{{ error }}</span>
     {% endif %}
     {% for owner in hwi_oauth_resource_owners() %}
-    <a href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
+    <a href="{{ hwi_oauth_login_url(owner) }}" class="button center">Login with {{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
     {% endfor %}
 {% endblock hwi_oauth_content %}
+
+
+<br>
+
+</div>
+</div>
+{% endblock %}
+
+{# ------------------------------------------
+    Eof template
+--------------------------------------------- #}
