@@ -60,26 +60,26 @@ class FOSUBRegistrationFormHandler implements RegistrationFormHandlerInterface
      */
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)
     {
-        if (null !== $this->registrationFormHandler) {
-            $formHandler = $this->reconstructFormHandler($request, $form);
+        // if (null !== $this->registrationFormHandler) {
+        //     $formHandler = $this->reconstructFormHandler($request, $form);
 
-            // make FOSUB process the form already
-            $processed = $formHandler->process();
+        //     // make FOSUB process the form already
+        //     $processed = $formHandler->process();
 
-            // if the form is not posted we'll try to set some properties
-            if ('POST' === $request->getMethod()) {
-                $user = $this->setUserInformation($form->getData(), $userInformation);
+        //     // if the form is not posted we'll try to set some properties
+        //     if ('POST' === $request->getMethod()) {
+        //         $user = $this->setUserInformation($form->getData(), $userInformation);
 
-                $form->setData($user);
-            }
+        //         $form->setData($user);
+        //     }
 
-            return $processed;
-        }
+        //     return $processed;
+        // }
 
         //let's build our own user object to pass to the form binding
         $uInfo = $userInformation->getResponse();
 
-        $user = new \CoreCreative\Bundle\PresentationBundle\Entity\User();
+        $user = new \Core\UsrBundle\Entity\User();
 
         $user->setSalesforceId($uInfo['Id']);
         $user->setUsername($uInfo['CommunityNickname']);
